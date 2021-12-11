@@ -29,8 +29,14 @@ metadata:
     config.kubernetes.io/function: |
       container:
         image: ghcr.io/choffmeister/kustomize-variable-injector:latest
-values:
-  DOMAIN: mydomain.com
+replacements:
+  - target:
+      group: networking.k8s.io
+      version: v1
+      kind: Ingress
+      name: ingress
+    variables:
+      DOMAIN: mydomain.com
 
 # kustomization.yaml
 resources:

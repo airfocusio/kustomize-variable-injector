@@ -6,5 +6,6 @@ metadata:
     config.kubernetes.io/function: |
       container:
         image: ghcr.io/choffmeister/kustomize-variable-injector:latest
-values:
-  DOMAIN: mydomain.com
+replacements:
+  - variables:
+      DOMAIN: mydomain.com

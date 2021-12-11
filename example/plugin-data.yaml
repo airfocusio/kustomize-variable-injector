@@ -8,14 +8,29 @@ items:
     spec:
       rules:
         - host: "sub.${DOMAIN:-domain.com}"
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: service
+    spec:
+      ports:
+        - name: http
+          port: ${PORT:number}
 functionConfig:
-  kind: SopsDecryptor
+  kind: VariableReplacer
   metadata:
-    name: sops-decryptor
+    name: variable-injector
     annotations:
       config.kubernetes.io/function: |
         container:
           image: ghcr.io/choffmeister/kustomize-variable-injector:latest
       config.kubernetes.io/local-config: 'true'
-  values:
-    DOMAIN: mydomain.com
+  replacements:
+    - target:
+        kind: Ingress
+      variables:
+        DOMAIN: mydomain.com
+    - target:
+        kind: Service
+      variables:
+        PORT: 8080
