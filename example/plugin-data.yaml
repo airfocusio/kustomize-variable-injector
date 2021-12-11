@@ -1,0 +1,21 @@
+apiVersion: config.kubernetes.io/v1
+kind: ResourceList
+items:
+  - apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+      name: ingress
+    spec:
+      rules:
+        - host: "sub.${DOMAIN:-domain.com}"
+functionConfig:
+  kind: SopsDecryptor
+  metadata:
+    name: sops-decryptor
+    annotations:
+      config.kubernetes.io/function: |
+        container:
+          image: ghcr.io/choffmeister/kustomize-variable-injector:latest
+      config.kubernetes.io/local-config: 'true'
+  values:
+    DOMAIN: mydomain.com

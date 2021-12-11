@@ -1,0 +1,4 @@
+resources:
+  - plain.yaml
+transformers:
+  - variable-injector.yaml
