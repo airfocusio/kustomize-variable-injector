@@ -30,11 +30,11 @@ metadata:
       container:
         image: ghcr.io/choffmeister/kustomize-variable-injector:latest
 replacements:
-  - target:
-      group: networking.k8s.io
-      version: v1
-      kind: Ingress
-      name: ingress
+  - targets:
+      - group: networking.k8s.io
+        version: v1
+        kind: Ingress
+        name: ingress
     variables:
       DOMAIN: mydomain.com
 

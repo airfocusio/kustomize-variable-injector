@@ -7,5 +7,11 @@ metadata:
       container:
         image: ghcr.io/choffmeister/kustomize-variable-injector:latest
 replacements:
-  - variables:
+  - targets:
+      - kind: Ingress
+    variables:
       DOMAIN: mydomain.com
+  - targets:
+      - kind: Service
+    variables:
+      PORT: 8080

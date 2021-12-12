@@ -19,33 +19,49 @@ type Target struct {
 	Namespace string `yaml:"namespace"`
 }
 
+type Replacement struct {
+	Targets   []Target          `yaml:"targets"`
+	Variables map[string]string `yaml:"variables"`
+}
+
 type Config struct {
-	Replacements []struct {
-		Target    Target            `yaml:"target"`
-		Variables map[string]string `yaml:"variables"`
-	} `yaml:"replacements"`
+	Replacements []Replacement `yaml:"replacements"`
 }
 
 func Run() error {
 	config := new(Config)
-	fn := func(items []*yaml.RNode) ([]*yaml.RNode, error) {
+	p := framework.SimpleProcessor{Config: config, Filter: kio.FilterFunc(replace(config))}
+	cmd := command.Build(p, command.StandaloneDisabled, false)
+	err := cmd.Execute()
+	if err != nil {
+		os.Stderr.WriteString("\n")
+		return err
+	}
+	return nil
+}
+
+func replace(config *Config) func(items []*yaml.RNode) ([]*yaml.RNode, error) {
+	return func(items []*yaml.RNode) ([]*yaml.RNode, error) {
 		for i := range items {
 			match := false
 			variables := map[string]string{}
-			for _, t := range config.Replacements {
+			for _, r := range config.Replacements {
 				group, version := parseApiVersion(items[i].GetApiVersion())
 				kind := items[i].GetKind()
 				name := items[i].GetName()
 				namespace := items[i].GetNamespace()
-				if (t.Target.Group == "" || t.Target.Group == group) &&
-					(t.Target.Version == "" || t.Target.Version == version) &&
-					(t.Target.Kind == "" || t.Target.Kind == kind) &&
-					(t.Target.Name == "" || t.Target.Name == name) &&
-					(t.Target.Namespace == "" || t.Target.Namespace == namespace) {
-					for k, v := range t.Variables {
-						variables[k] = v
+				for _, t := range r.Targets {
+					if (t.Group == "" || t.Group == group) &&
+						(t.Version == "" || t.Version == version) &&
+						(t.Kind == "" || t.Kind == kind) &&
+						(t.Name == "" || t.Name == name) &&
+						(t.Namespace == "" || t.Namespace == namespace) {
+						for k, v := range r.Variables {
+							variables[k] = v
+						}
+						match = true
+						break
 					}
-					match = true
 				}
 			}
 
@@ -81,15 +97,6 @@ func Run() error {
 
 		return items, nil
 	}
-
-	p := framework.SimpleProcessor{Config: config, Filter: kio.FilterFunc(fn)}
-	cmd := command.Build(p, command.StandaloneDisabled, false)
-	err := cmd.Execute()
-	if err != nil {
-		os.Stderr.WriteString("\n")
-		return err
-	}
-	return nil
 }
 
 func parseApiVersion(apiVersion string) (string, string) {

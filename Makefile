@@ -4,13 +4,13 @@ MAIN := .
 TEST := ./internal
 
 test:
-	cat example/plugin-data.yaml | go run $(MAIN)
+	go test -v $(TEST)
 
 test-docker: build-docker
 	kustomize build example --enable-alpha-plugins
 
 test-watch:
-	watch -n1 "cat example/plugin-data.yaml | go run $(MAIN)"
+	watch -n1 go test -v $(TEST)
 
 test-cover:
 	go test -coverprofile=coverage.out $(TEST)

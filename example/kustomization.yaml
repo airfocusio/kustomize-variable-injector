@@ -1,4 +1,5 @@
 resources:
-  - plain.yaml
+  - service.yaml
+  - ingress.yaml
 transformers:
   - variable-injector.yaml
