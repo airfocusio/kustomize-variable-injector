@@ -45,8 +45,8 @@ github.com/PuerkitoBio/purell v1.1.1 h1:WEQqlqaGbrPkxLJWfBwQmfEAE1Z7ONdDLqrN38tN
 github.com/PuerkitoBio/purell v1.1.1/go.mod h1:c11w/QuzBsJSee3cPx9rAFu61PvFxuPbtSwDGJws/X0=
 github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 h1:d+Bc7a5rLufV/sSk/8dngufqelfh6jnri85riMAaF/M=
 github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578/go.mod h1:uGdkoq3SwY9Y+13GIhn11/XLaGBb4BfwItxLd5jeuXE=
-github.com/airfocusio/go-expandenv v0.1.0-alpha.3 h1:m11MvFhQpjkj8r9j2a+DodrDSiwKmFTx5IX/DZvYuRo=
-github.com/airfocusio/go-expandenv v0.1.0-alpha.3/go.mod h1:UB5QYHJ7klVI34hnK9G3xtveYnKUAIC94hpP9rvzl2o=
+github.com/airfocusio/go-expandenv v0.1.0-alpha.5 h1:mvIBrFAfhpzBGRbL6OUqdEO2XruoT5YRRO3O/84EHVc=
+github.com/airfocusio/go-expandenv v0.1.0-alpha.5/go.mod h1:UB5QYHJ7klVI34hnK9G3xtveYnKUAIC94hpP9rvzl2o=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
 github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kdvxnR2qWY=

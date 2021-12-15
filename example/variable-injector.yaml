@@ -15,3 +15,4 @@ replacements:
       - kind: Service
     variables:
       PORT: 8080
+prefix: PREFIX_

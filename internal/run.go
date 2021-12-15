@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
@@ -25,6 +26,7 @@ type Replacement struct {
 }
 
 type Config struct {
+	Prefix       string        `yaml:"prefix"`
 	Replacements []Replacement `yaml:"replacements"`
 }
 
@@ -50,18 +52,25 @@ func replace(config *Config) func(items []*yaml.RNode) ([]*yaml.RNode, error) {
 				kind := items[i].GetKind()
 				name := items[i].GetName()
 				namespace := items[i].GetNamespace()
+				currentMatch := false
 				for _, t := range r.Targets {
 					if (t.Group == "" || t.Group == group) &&
 						(t.Version == "" || t.Version == version) &&
 						(t.Kind == "" || t.Kind == kind) &&
 						(t.Name == "" || t.Name == name) &&
 						(t.Namespace == "" || t.Namespace == namespace) {
-						for k, v := range r.Variables {
-							variables[k] = v
-						}
-						match = true
+						currentMatch = true
 						break
 					}
+				}
+				if len(r.Targets) == 0 {
+					currentMatch = true
+				}
+				if currentMatch {
+					for k, v := range r.Variables {
+						variables[k] = v
+					}
+					match = true
 				}
 			}
 
@@ -77,7 +86,18 @@ func replace(config *Config) func(items []*yaml.RNode) ([]*yaml.RNode, error) {
 				if err != nil {
 					return nil, err
 				}
-				yamlRaw, err = expandenv.Expand(yamlRaw, variables)
+				yamlRaw, err = expandenv.Expand(yamlRaw, func(key string) (*string, error) {
+					if !strings.HasPrefix(key, config.Prefix) {
+						return nil, nil
+					}
+					key = strings.TrimPrefix(key, config.Prefix)
+
+					value, ok := variables[key]
+					if !ok {
+						return nil, fmt.Errorf("variable %s is missing", key)
+					}
+					return &value, nil
+				})
 				if err != nil {
 					return nil, err
 				}

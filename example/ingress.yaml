@@ -4,4 +4,5 @@ metadata:
   name: ingress
 spec:
   rules:
-    - host: "sub.${DOMAIN:-domain.com}"
+    - host: "sub.${FOOBAR}"
+    - host: "sub.${PREFIX_DOMAIN:-domain.com}"

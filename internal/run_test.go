@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -181,6 +182,92 @@ spec:
   - host: sub.mydomain2.com
 `,
 			label: "multiple-replacements",
+		},
+		{
+			config: Config{
+				Replacements: []Replacement{
+					{
+						Variables: map[string]string{
+							"DOMAIN": "mydomain.com",
+						},
+					},
+				},
+			},
+			input: `apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  rules:
+  - host: "sub.${DOMAIN}"
+`,
+			output: `apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  rules:
+  - host: sub.mydomain.com
+`,
+			label: "empty-targets",
+		},
+		{
+			config: Config{
+				Replacements: []Replacement{
+					{
+						Variables: map[string]string{},
+					},
+				},
+			},
+			input: `apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  rules:
+  - host: "sub.${DOMAIN}"
+`,
+			output: `apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  rules:
+  - host: "sub.${DOMAIN}"
+`,
+			label: "missing",
+			error: fmt.Errorf("variable DOMAIN is missing"),
+		},
+		{
+			config: Config{
+				Prefix: "PREFIX_",
+				Replacements: []Replacement{
+					{
+						Variables: map[string]string{
+							"DOMAIN": "mydomain.com",
+						},
+					},
+				},
+			},
+			input: `apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  rules:
+  - host: "sub.${UNKNOWN}"
+  - host: "sub.${PREFIX_DOMAIN}"
+`,
+			output: `apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  rules:
+  - host: sub.${UNKNOWN}
+  - host: sub.mydomain.com
+`,
+			label: "prefixed",
 		},
 	}
 
