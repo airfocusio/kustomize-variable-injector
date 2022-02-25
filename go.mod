@@ -1,4 +1,4 @@
-module github.com/choffmeister/kustomize-variable-injector
+module github.com/airfocusio/kustomize-variable-injector
 
 go 1.17
 

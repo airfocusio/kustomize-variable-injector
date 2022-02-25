@@ -21,14 +21,14 @@ spec:
     - host: "sub.${DOMAIN:-domain.com}"
 
 # variable-injector.yaml
-apiVersion: choffmeister.github.com/v1alpha1
+apiVersion: airfocusio.github.com/v1alpha1
 kind: VariableReplacer
 metadata:
   name: variable-injector
   annotations:
     config.kubernetes.io/function: |
       container:
-        image: ghcr.io/choffmeister/kustomize-variable-injector:latest
+        image: ghcr.io/airfocusio/kustomize-variable-injector:latest
 replacements:
   - targets:
       - group: networking.k8s.io

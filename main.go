@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/choffmeister/kustomize-variable-injector/cmd"
+	"github.com/airfocusio/kustomize-variable-injector/cmd"
 )
 
 // nolint: gochecknoglobals

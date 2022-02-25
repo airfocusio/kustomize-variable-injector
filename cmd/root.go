@@ -5,7 +5,7 @@ import (
 	"os"
 	"runtime/debug"
 
-	"github.com/choffmeister/kustomize-variable-injector/internal"
+	"github.com/airfocusio/kustomize-variable-injector/internal"
 	"github.com/spf13/cobra"
 )
 
