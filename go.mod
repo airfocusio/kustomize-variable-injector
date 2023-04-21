@@ -6,7 +6,7 @@ require (
 	github.com/airfocusio/go-expandenv v0.1.0
 	github.com/spf13/cobra v1.7.0
 	github.com/stretchr/testify v1.8.2
-	sigs.k8s.io/kustomize/kyaml v0.14.0
+	sigs.k8s.io/kustomize/kyaml v0.14.1
 )
 
 require (
